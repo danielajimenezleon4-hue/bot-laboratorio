@@ -42,11 +42,14 @@ def crear_pedido():
     try:
         data = request.get_json(force=True)
 
-        nombre = data.get('nombre')
+        # 🔥 FIX CLAVE (manejo de nombre)
+        nombre_data = data.get('nombre')
+
         if isinstance(nombre_data, dict):
-    nombre = nombre_data.get('first', '')
-else:
-    nombre = nombre_data
+            nombre = nombre_data.get('first', '')
+        else:
+            nombre = nombre_data
+
         medicamento = data.get('medicamento')
         cantidad = data.get('cantidad')
         direccion = data.get('direccion')
@@ -64,9 +67,10 @@ else:
         })
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print("ERROR EN SERVIDOR:", str(e))
+        return jsonify({"error": "Error interno del servidor"}), 500
 
 
-# ===== EJECUCIÓN =====
+# ===== RUN =====
 if __name__ == '__main__':
     app.run(debug=True)
