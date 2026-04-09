@@ -43,6 +43,10 @@ def crear_pedido():
         data = request.get_json(force=True)
 
         nombre = data.get('nombre')
+        if isinstance(nombre_data, dict):
+    nombre = nombre_data.get('first', '')
+else:
+    nombre = nombre_data
         medicamento = data.get('medicamento')
         cantidad = data.get('cantidad')
         direccion = data.get('direccion')
