@@ -29,12 +29,10 @@ def guardar_pedido(nombre, medicamento, cantidad, direccion):
 
     return pedido_id
 
-
 # ===== ENDPOINT PRINCIPAL =====
 @app.route('/')
 def home():
     return "Servidor funcionando"
-
 
 # ===== ENDPOINT CREAR PEDIDO =====
 @app.route('/pedido', methods=['POST'])
@@ -42,7 +40,7 @@ def crear_pedido():
     try:
         data = request.get_json(force=True)
 
-        # 🔥 FIX CLAVE (manejo de nombre)
+        # 🔥 ARREGLO CLAVE DEL NOMBRE
         nombre_data = data.get('nombre')
 
         if isinstance(nombre_data, dict):
@@ -54,7 +52,7 @@ def crear_pedido():
         cantidad = data.get('cantidad')
         direccion = data.get('direccion')
 
-        # Validación básica
+        # Validación
         if not nombre or not medicamento or not direccion:
             return jsonify({"error": "Datos incompletos"}), 400
 
@@ -67,10 +65,9 @@ def crear_pedido():
         })
 
     except Exception as e:
-        print("ERROR EN SERVIDOR:", str(e))
-        return jsonify({"error": "Error interno del servidor"}), 500
+        print("ERROR BACKEND:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 
-# ===== RUN =====
 if __name__ == '__main__':
     app.run(debug=True)
